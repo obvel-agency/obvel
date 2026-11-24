@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OBVÉL | Ensamblaje Arquitectónico y Arte en Acrílico</title>
+    <meta name="description" content="OBVÉL: Servicio exclusivo de ensamblaje de mobiliario a domicilio, fabricación propia e instalación de cuadros en acrílico. Precisión láser y trato de guante blanco.">
+    
+    <!-- Favicon SVG Integrado (Monograma Arquitectónico OBVÉL) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23070708'/%3E%3Crect x='10' y='10' width='44' height='44' fill='none' stroke='%23D4B475' stroke-width='2.2'/%3E%3Cpolygon points='32,18 46,32 32,46 18,32' fill='none' stroke='%23F0EDE6' stroke-width='1.8'/%3E%3Ccircle cx='32' cy='32' r='3' fill='%23D4B475'/%3E%3C/svg%3E">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        obsidian: '#070708',
+                        charcoal: '#0F0F12',
+                        surface: '#16161A',
+                        surfaceLight: '#1E1E24',
+                        alabaster: '#F0EDE6',
+                        gold: '#D4B475',
+                        goldLight: '#E8CFA0',
+                        goldMuted: '#9E824B',
+                        muted: '#8E8D8A'
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        serif: ['Cormorant Garamond', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --gold: #D4B475;
+            --obsidian: #070708;
+            --alabaster: #F0EDE6;
+        }
+
+        body {
+            background-color: #070708;
+            color: #F0EDE6;
+            overflow-x: hidden;
+        }
+
+        /* Barra de progreso de lectura */
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            width: 0%;
+            background: linear-gradient(90deg, #9E824B, #D4B475, #F0EDE6);
+            z-index: 100;
+            transition: width 0.1s linear;
+        }
+
+        /* Textura sutil de grano editorial */
+        .noise-overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 90;
+            opacity: 0.032;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Preloader Premium con trazo animado */
+        #preloader {
+            position: fixed;
+            inset: 0;
+            background-color: #070708;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s ease;
+        }
+        .logo-draw {
+            stroke-dasharray: 220;
+            stroke-dashoffset: 220;
+            animation: drawStroke 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .loader-line {
+            width: 140px;
+            height: 1px;
+            background: rgba(212, 180, 117, 0.2);
+            overflow: hidden;
+            position: relative;
+        }
+        .loader-line::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: #D4B475;
+            animation: loadSlide 1.2s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+        }
+
+        /* Navegación Glass */
+        .glass-nav {
+            background: rgba(7, 7, 8, 0.68);
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+            border-bottom: 1px solid rgba(240, 237, 230, 0.06);
+        }
+
+        /* Gradientes y Brillos */
+        .hero-gradient {
+            background: linear-gradient(95deg, rgba(7,7,8,0.97) 0%, rgba(7,7,8,0.84) 48%, rgba(7,7,8,0.42) 100%);
+        }
+        .ambient-glow {
+            background: radial-gradient(circle at 50% 0%, rgba(212, 180, 117, 0.09) 0%, rgba(7, 7, 8, 0) 62%);
+        }
+
+        /* Efecto Spotlight en tarjetas */
+        .spotlight-card {
+            position: relative;
+            overflow: hidden;
+        }
+        .spotlight-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(212, 180, 117, 0.11), transparent 45%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .spotlight-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Animaciones Reveal */
+        .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .reveal-left { opacity: 0; transform: translateX(-30px); transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal-left.active { opacity: 1; transform: translateX(0); }
+        .reveal-right { opacity: 0; transform: translateX(30px); transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal-right.active { opacity: 1; transform: translateX(0); }
+
+        /* Marquee infinito */
+        .marquee-track {
+            display: flex;
+            width: max-content;
+            animation: marquee 34s linear infinite;
+        }
+        .marquee-track:hover { animation-play-state: paused; }
+
+        /* Scroll indicator */
+        .scroll-line {
+            width: 100%; height: 100%; background: #D4B475; position: absolute;
+            top: -100%; left: 0; animation: scrollDown 2.2s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+        }
+
+        /* Simulador de Acrílico (Brillo cristalino) */
+        .acrylic-preview-frame {
+            position: relative;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.18);
+        }
+        .acrylic-sheen {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(125deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.03) 35%, rgba(255,255,255,0) 55%, rgba(212,180,117,0.08) 100%);
+            pointer-events: none;
+        }
+        .standoff-pin {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            position: absolute;
+            background: radial-gradient(circle at 30% 30%, #F0EDE6, #9E824B);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.8);
+            transition: opacity 0.3s ease;
+        }
+
+        /* Timeline Acrílicos */
+        .timeline-dot::before {
+            content: '';
+            position: absolute;
+            left: -33px;
+            top: 7px;
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background-color: #D4B475;
+            box-shadow: 0 0 0 5px #0F0F12, 0 0 14px rgba(212, 180, 117, 0.55);
+        }
+
+        /* Acordeón FAQ */
+        .faq-content {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .faq-content-inner { overflow: hidden; }
+        .faq-icon { transition: transform 0.35s ease; }
+        .faq-item.active .faq-content { grid-template-rows: 1fr; }
+        .faq-item.active .faq-icon { transform: rotate(45deg); }
+
+        /* Lightbox */
+        #lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background-color: rgba(7, 7, 8, 0.96);
+            backdrop-filter: blur(16px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        #lightbox.active { opacity: 1; }
+        .lightbox-img-wrap {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.96);
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            max-width: 88vw;
+            max-height: 85vh;
+        }
+        #lightbox.active .lightbox-img-wrap { transform: translate(-50%, -50%) scale(1); }
+
+        /* Botones activos */
+        .filter-btn.active,
+        .config-option.active,
+        .service-pill.active {
+            background-color: #D4B475;
+            color: #070708;
+            border-color: #D4B475;
+            font-weight: 600;
+        }
+
+        /* Keyframes */
+        @keyframes drawStroke { to { stroke-dashoffset: 0; } }
+        @keyframes loadSlide { 0% { left: -100%; } 100% { left: 100%; } }
+        @keyframes scrollDown { 0% { top: -100%; } 100% { top: 100%; } }
+        @keyframes slowZoom { 0% { transform: scale(1); } 100% { transform: scale(1.08); } }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        @keyframes subtleFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+        .hero-bg-anim { animation: slowZoom 28s ease-in-out infinite alternate; }
+        .float-anim { animation: subtleFloat 5s ease-in-out infinite; }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 7px; }
+        ::-webkit-scrollbar-track { background: #070708; }
+        ::-webkit-scrollbar-thumb { background: #222228; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #D4B475; }
+    </style>
+</head>
+<body class="font-sans antialiased selection:bg-gold selection:text-obsidian">
+
+    <!-- Barra de progreso superior -->
+    <div id="scroll-progress"></div>
+
+    <!-- Grano sutil editorial -->
+    <div class="noise-overlay"></div>
+
+    <!-- ========================================================= -->
+    <!-- PRELOADER CON LOGO ARQUITECTÓNICO OBVÉL                   -->
+    <!-- ========================================================= -->
+    <div id="preloader">
+        <div class="flex flex-col items-center gap-4">
+            <svg class="w-16 h-16 text-gold" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Marco exterior de precisión -->
+                <rect x="8" y="8" width="64" height="64" stroke="currentColor" stroke-width="2" class="logo-draw"/>
+                <!-- Esquinas láser -->
+                <path d="M4 16V4H16M64 4H76V16M76 64V76H64M16 76H4V64" stroke="#D4B475" stroke-width="1.5" opacity="0.6"/>
+                <!-- Prisma interior -->
+                <polygon points="40,18 62,40 40,62 18,40" stroke="#F0EDE6" stroke-width="1.6" class="logo-draw"/>
+                <!-- Núcleo dorado -->
+                <rect x="35" y="35" width="10" height="10" transform="rotate(45 40 40)" fill="#D4B475"/>
+            </svg>
+            <div class="text-center">
+                <span class="font-serif text-3xl tracking-[0.35em] text-alabaster block">OBVÉL</span>
+                <span class="text-[9px] uppercase tracking-[0.35em] text-gold/80 mt-1 block">Arquitectura & Acrílico</span>
+            </div>
+        </div>
+        <div class="loader-line"></div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- NAVEGACIÓN PRINCIPAL                                      -->
+    <!-- ========================================================= -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 lg:px-10 py-4 flex justify-between items-center">
+            <!-- Logo Completo OBVÉL -->
+            <a href="#" class="flex items-center gap-3.5 group" aria-label="OBVÉL Inicio">
+                <div class="relative w-10 h-10 flex items-center justify-center">
+                    <svg class="w-10 h-10 text-gold transition-transform duration-700 group-hover:rotate-90" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="10" y="10" width="60" height="60" stroke="currentColor" stroke-width="2.4"/>
+                        <path d="M4 18V4H18M62 4H76V18M76 62V76H62M18 76H4V62" stroke="#D4B475" stroke-width="1.8" opacity="0.65"/>
+                        <polygon points="40,20 60,40 40,60 20,40" stroke="#F0EDE6" stroke-width="2"/>
+                        <circle cx="40" cy="40" r="3.5" fill="#D4B475"/>
+                    </svg>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-2xl font-serif font-semibold tracking-[0.26em] text-alabaster leading-none">
+                        OBVÉL<span class="text-gold">.</span>
+                    </span>
+                    <span class="text-[8.5px] uppercase tracking-[0.3em] text-muted mt-1 hidden sm:block">Ensamblaje & Acrílico</span>
+                </div>
+            </a>
+
+            <!-- Enlaces Desktop -->
+            <div class="hidden lg:flex items-center space-x-8 text-[11px] font-medium tracking-[0.2em] uppercase text-alabaster/80">
+                <a href="#filosofia" class="hover:text-gold transition-colors">Filosofía</a>
+                <a href="#servicios" class="hover:text-gold transition-colors">Servicios</a>
+                <a href="#configurador" class="hover:text-gold transition-colors text-gold/90">Configurador</a>
+                <a href="#acrilicos" class="hover:text-gold transition-colors">Taller</a>
+                <a href="#portafolio" class="hover:text-gold transition-colors">Portafolio</a>
+                <a href="#faq" class="hover:text-gold transition-colors">FAQ</a>
+            </div>
+
+            <!-- CTA Desktop -->
+            <a href="https://wa.me/525664825962?text=Hola%20OBV%C3%89L,%20me%20gustar%C3%ADa%20cotizar%20un%20servicio." target="_blank" class="hidden md:inline-flex items-center gap-2.5 bg-gold text-obsidian px-6 py-3 text-[11px] uppercase tracking-[0.2em] font-semibold hover:bg-alabaster transition-all duration-300 shadow-[0_8px_25px_rgba(212,180,117,0.2)]">
+                <span>Cotizar por WhatsApp</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+            </a>
+
+            <!-- Botón Menú Móvil -->
+            <button class="lg:hidden text-alabaster focus:outline-none hover:text-gold p-1" id="mobile-menu-btn" aria-label="Abrir menú">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 7h16M4 12h16M4 17h16"></path></svg>
+            </button>
+        </div>
+
+        <!-- Panel Móvil -->
+        <div class="lg:hidden hidden bg-charcoal/95 backdrop-blur-xl border-t border-white/10 absolute w-full shadow-2xl" id="mobile-menu">
+            <div class="flex flex-col px-6 py-8 space-y-5 text-center text-xs tracking-[0.22em] uppercase">
+                <a href="#filosofia" class="mobile-link block py-1 hover:text-gold text-alabaster">Filosofía</a>
+                <a href="#servicios" class="mobile-link block py-1 hover:text-gold text-alabaster">Servicios</a>
+                <a href="#configurador" class="mobile-link block py-1 text-gold font-medium">Configurador Acrílico</a>
+                <a href="#acrilicos" class="mobile-link block py-1 hover:text-gold text-alabaster">Taller Propio</a>
+                <a href="#portafolio" class="mobile-link block py-1 hover:text-gold text-alabaster">Portafolio</a>
+                <a href="#faq" class="mobile-link block py-1 hover:text-gold text-alabaster">FAQ</a>
+                <a href="https://wa.me/525664825962?text=Hola%20OBV%C3%89L,%20me%20gustar%C3%ADa%20agendar%20un%20servicio." target="_blank" class="block py-4 mt-2 bg-gold text-obsidian font-semibold">Cotizar por WhatsApp</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ========================================================= -->
+    <!-- 1. HERO SECTION CON SELLO ARQUITECTÓNICO OBVÉL            -->
+    <!-- ========================================================= -->
+    <section class="relative min-h-screen flex items-center overflow-hidden bg-obsidian pt-28 pb-20">
+        <!-- Fondo fotográfico -->
+        <div class="absolute inset-0 w-full h-full">
+            <img src="https://images.unsplash.com/photo-1600210491369-0eb3745a557b?auto=format&fit=crop&q=85&w=1920" alt="Interior arquitectónico de lujo" class="w-full h-full object-cover hero-bg-anim opacity-50">
+            <div class="absolute inset-0 hero-gradient"></div>
+        </div>
+
+        <!-- Marca de agua gigante del Logo OBVÉL en el fondo derecho -->
+        <div class="hidden xl:flex absolute right-12 top-1/2 -translate-y-1/2 pointer-events-none opacity-[0.14] float-anim z-0">
+            <svg class="w-[460px] h-[460px] text-gold" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="20" y="20" width="160" height="160" stroke="currentColor" stroke-width="1"/>
+                <rect x="34" y="34" width="132" height="132" stroke="#F0EDE6" stroke-width="0.6" stroke-dasharray="4 4"/>
+                <polygon points="100,30 170,100 100,170 30,100" stroke="currentColor" stroke-width="1.2"/>
+                <circle cx="100" cy="100" r="24" stroke="#F0EDE6" stroke-width="0.8"/>
+                <line x1="100" y1="6" x2="100" y2="194" stroke="currentColor" stroke-width="0.5" opacity="0.5"/>
+                <line x1="6" y1="100" x2="194" y2="100" stroke="currentColor" stroke-width="0.5" opacity="0.5"/>
+            </svg>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 w-full">
+            <div class="max-w-3xl reveal-left active">
+                <!-- Badge con Monograma -->
+                <div class="inline-flex items-center gap-3 border border-gold/35 bg-obsidian/70 backdrop-blur-md px-4 py-2 mb-8">
+                    <span class="w-2 h-2 rounded-full bg-gold animate-pulse"></span>
+                    <span class="text-[11px] uppercase tracking-[0.25em] text-gold font-medium">Ensamblaje de Guante Blanco & Arte en Acrílico</span>
+                </div>
+
+                <h1 class="text-5xl sm:text-6xl lg:text-7xl xl:text-[5.3rem] font-serif text-alabaster leading-[1.04] mb-8 font-normal">
+                    La precisión invisible detrás de un espacio <span class="italic text-gold">extraordinario.</span>
+                </h1>
+
+                <p class="text-base sm:text-lg text-alabaster/75 font-light mb-10 max-w-xl leading-relaxed">
+                    Ensamblamos mobiliario de alta gama, fabricamos tus cuadros de acrílico a medida en nuestro taller y los instalamos con nivelación láser. Orden absoluto y acabados impecables en cada visita.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4 mb-14">
+                    <a href="https://wa.me/525664825962?text=Hola%20OBV%C3%89L,%20quiero%20una%20cotizaci%C3%B3n%20inmediata." target="_blank" class="inline-flex justify-center items-center gap-3 bg-gold text-obsidian px-8 py-4 text-xs uppercase tracking-[0.2em] font-semibold hover:bg-alabaster transition-all duration-300 shadow-[0_12px_35px_rgba(212,180,117,0.25)]">
+                        <span>Cotizar Ahora</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </a>
+                    <a href="#configurador" class="inline-flex justify-center items-center gap-2 border border-gold/40 bg-obsidian/50 text-gold px-8 py-4 text-xs uppercase tracking-[0.2em] font-medium hover:bg-gold hover:text-obsidian transition-all duration-300 backdrop-blur-sm">
+                        <span>Configurar Acrílico</span>
+                    </a>
+                </div>
+
+                <!-- Micro-indicadores de valor -->
+                <div class="grid grid-cols-3 gap-6 border-t border-white/10 pt-8 max-w-lg">
+                    <div>
+                        <p class="font-serif text-2xl sm:text-3xl text-gold">Láser 360°</p>
+                        <p class="text-[11px] uppercase tracking-wider text-muted mt-1">Nivelación exacta</p>
+                    </div>
+                    <div>
+                        <p class="font-serif text-2xl sm:text-3xl text-gold">In-House</p>
+                        <p class="text-[11px] uppercase tracking-wider text-muted mt-1">Acrílico a medida</p>
+                    </div>
+                    <div>
+                        <p class="font-serif text-2xl sm:text-3xl text-gold">Orden</p>
+                        <p class="text-[11px] uppercase tracking-wider text-muted mt-1">Área impecable</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hidden md:flex absolute bottom-8 left-1/2 -translate-x-1/2 flex-col items-center z-10">
+            <span class="text-muted text-[10px] uppercase tracking-[0.25em] mb-3">Explorar</span>
+            <div class="w-px h-12 bg-white/15 relative overflow-hidden">
+                <div class="scroll-line"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cinta de Marcas y Especialidades -->
+    <div class="bg-charcoal border-y border-white/10 py-5 overflow-hidden">
+        <div class="marquee-track flex items-center gap-12 text-xs uppercase tracking-[0.28em] text-muted/80 font-medium">
+            <span>IKEA</span><span class="text-gold">◆</span>
+            <span>WEST ELM</span><span class="text-gold">◆</span>
+            <span>CB2</span><span class="text-gold">◆</span>
+            <span>POTTERY BARN</span><span class="text-gold">◆</span>
+            <span>WAYFAIR</span><span class="text-gold">◆</span>
+            <span>HERMAN MILLER</span><span class="text-gold">◆</span>
+            <span>ACRÍLICO A MEDIDA</span><span class="text-gold">◆</span>
+            <span>MONTAJE DE ARTE</span><span class="text-gold">◆</span>
+            <!-- Duplicado para loop continuo -->
+            <span>IKEA</span><span class="text-gold">◆</span>
+            <span>WEST ELM</span><span class="text-gold">◆</span>
+            <span>CB2</span><span class="text-gold">◆</span>
+            <span>POTTERY BARN</span><span class="text-gold">◆</span>
+            <span>WAYFAIR</span><span class="text-gold">◆</span>
+            <span>HERMAN MILLER</span><span class="text-gold">◆</span>
+            <span>ACRÍLICO A MEDIDA</span><span class="text-gold">◆</span>
+            <span>MONTAJE DE ARTE</span><span class="text-gold">◆</span>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- 2. FILOSOFÍA & SELLO DE MARCA                             -->
+    <!-- ========================================================= -->
+    <section id="filosofia" class="py-28 bg-obsidian relative ambient-glow border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 lg:px-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+                <div class="lg:col-span-6 reveal-left">
+                    <span class="text-gold text-xs uppercase tracking-[0.25em] block mb-4">Nuestra Filosofía</span>
+                    <h2 class="text-4xl lg:text-5xl font-serif mb-6 text-alabaster leading-tight">
+                        El lujo verdadero es no tener que preocuparte por los detalles.
+                    </h2>
+                    <p class="text-muted font-light leading-relaxed mb-6">
+                        Invertir en mobiliario contemporáneo o piezas de arte en acrílico debería ser un placer, no una tarde perdida entre manuales confusos y herramientas inadecuadas. En <strong class="text-alabaster font-medium">OBVÉL</strong> convertimos ese proceso en una experiencia silenciosa, puntual y exacta.
+                    </p>
+                    <p class="text-muted font-light leading-relaxed mb-10">
+                        Protegemos tus pisos y muros desde el primer minuto, calibramos cada bisagra y herraje con instrumentos de precisión y, al finalizar, recogemos el área de trabajo dejando todo en completo orden.
+                    </p>
+
+                    <div class="grid grid-cols-3 gap-6 border-t border-white/10 pt-8">
+                        <div>
+                            <div class="text-3xl lg:text-4xl font-serif text-gold mb-1"><span class="counter" data-target="1500">0</span>+</div>
+                            <div class="text-[10px] uppercase tracking-[0.18em] text-muted">Instalaciones</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl lg:text-4xl font-serif text-gold mb-1"><span class="counter" data-target="100">0</span>%</div>
+                            <div class="text-[10px] uppercase tracking-[0.18em] text-muted">Nivelación Láser</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl lg:text-4xl font-serif text-gold mb-1"><span class="counter" data-target="4.9" data-decimal="true">0</span>★</div>
+                            <div class="text-[10px] uppercase tracking-[0.18em] text-muted">Satisfacción</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-6 relative reveal-right">
+                    <div class="relative border border-white/10 p-3 bg-surface/40">
+                        <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&q=85&w=900" loading="lazy" alt="Espacio residencial ensamblado por OBVÉL" class="w-full h-[520px] object-cover">
+                        <!-- Emblema flotante con Logo OBVÉL -->
+                        <div class="absolute top-6 left-6 bg-obsidian/85 backdrop-blur-md border border-gold/40 p-3.5 flex items-center gap-3">
+                            <svg class="w-7 h-7 text-gold" viewBox="0 0 80 80" fill="none">
+                                <rect x="10" y="10" width="60" height="60" stroke="currentColor" stroke-width="2.5"/>
+                                <polygon points="40,20 60,40 40,60 20,40" stroke="#F0EDE6" stroke-width="2"/>
+                                <circle cx="40" cy="40" r="3.5" fill="#D4B475"/>
+                            </svg>
+                            <div>
+                                <span class="font-serif text-sm tracking-[0.2em] text-alabaster block leading-none">OBVÉL</span>
+                                <span class="text-[9px] uppercase tracking-[0.2em] text-gold">Sello de Calidad</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute -bottom-6 -left-4 md:-left-8 bg-charcoal border border-gold/30 p-6 shadow-2xl max-w-[250px]">
+                        <p class="font-serif italic text-gold text-xl mb-1">Guante Blanco</p>
+                        <p class="text-xs text-muted font-light leading-relaxed">Cuidado extremo en maderas finas, cristales, lacas y muros de tablaroca.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 3. SERVICIOS DE PRECISIÓN (CON EFECTO SPOTLIGHT)          -->
+    <!-- ========================================================= -->
+    <section id="servicios" class="py-28 bg-charcoal border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 lg:px-10">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6 reveal">
+                <div class="max-w-2xl">
+                    <span class="text-gold text-xs uppercase tracking-[0.25em] block mb-3">Especialidades</span>
+                    <h2 class="text-4xl md:text-5xl font-serif text-alabaster">Servicios de Precisión</h2>
+                </div>
+                <a href="https://wa.me/525664825962?text=Hola%20OBV%C3%89L,%20necesito%20asesor%C3%ADa%20para%20un%20proyecto%20especial." target="_blank" class="text-xs uppercase tracking-[0.2em] text-gold border-b border-gold/50 pb-1 hover:text-alabaster hover:border-alabaster transition-colors">
+                    Consultar proyecto a medida &rarr;
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Servicio 1 -->
+                <div class="spotlight-card group bg-surface/85 p-10 border border-white/10 hover:border-gold/60 transition-all duration-500 reveal flex flex-col justify-between">
+                    <div class="relative z-10">
+                        <div class="flex justify-between items-start mb-6">
+                            <span class="text-gold/70 font-serif italic text-2xl">01</span>
+                            <span class="text-[10px] uppercase tracking-[0.2em] text-muted border border-white/10 px-3 py-1">Hogar</span>
+                        </div>
+                        <h3 class="text-2xl md:text-3xl font-serif mb-4 text-alabaster">Ensamblaje Residencial</h3>
+                        <p class="text-muted font-light text-sm leading-relaxed mb-8">
+                            Armado especializado de clósets modulares, centros de entretenimiento, recámaras, cómodas y comedores de marcas nacionales e internacionales.
+                        </p>
+                    </div>
+                    <div class="relative z-10 border-t border-white/10 pt-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                        <ul class="space-y-2 text-xs text-alabaster/80 tracking-wide">
+                            <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 bg-gold rounded-full"></span> Anclaje de alta resistencia a muro</li>
+                            <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 bg-gold rounded-full"></span> Calibración exacta de puertas y cajones</li>
+                        </ul>
+                        <a href="https://wa.me/525664825962?text=Hola%20OBV%C3%89L,%20quiero%20cotizar%20Ensamblaje%20Residencial." target="_blank" class="text-[11px] uppercase tracking-[0.2em] text-gold hover:text-alabaster transition-colors shrink-0">Cotizar &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Servicio 2 -->
+                <div class="spotlight-card group bg-surface/85 p-10 border border-white/10 hover:border-gold/60 transition-all duration-500 reveal flex flex-col justify-between" style="transition-delay: 0.1s;">
+                    <div class="relative z-10">
+                        <div class="flex justify-between items-start mb-6">
+                            <span class="text-gold/70 font-serif italic text-2xl">02</span>
+                            <span class="text-[10px] uppercase tracking-[0.2em] text-gold border border-gold/30 px-3 py-1">Taller Propio</span>
+                        </div>
+                        <h3 class="text-2xl md:text-3xl font-serif mb-4 text-alabaster">Cuadros de Acrílico & Arte</h3>
+                        <p class="text-muted font-light text-sm leading-relaxed mb-8">
+                            Fabricación propia de cuadros en acrílico de alta definición, además de montaje arquitectónico de espejos de gran formato y galerías de pared.
+                        </p>
+                    </div>
+                    <div class="relative z-10 border-t border-white/10 pt-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                        <ul class="space-y-2 text-xs text-alabaster/80 tracking-wide">
+                            <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 bg-gold rounded-full"></span> Nivelación láser milimétrica</li>
+                            <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 bg-gold rounded-full"></span> Sistemas de fijación flotante y chapetones</li>
+                        </ul>
+                        <a href="#configurador" class="text-[11px] uppercase tracking-[0.2em] text-gold hover:text-alabaster transition-colors shrink-0">Configurar &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Servicio 3 -->
+                <div class="spotlight-card group bg-surface/85 p-10 border border-white/10 hover:border-gold/60 transition-all duration-500 reveal flex flex-col justify-between">
+                    <div class="relative z-10">
+                        <div class="flex justify-between items-start mb-6">
+                            <span class="text-gold/70 font-serif italic text-2xl">03</span>
+                            <span class="text-[10px] uppercase tracking-[0.2em] text-muted border border-white/10 px-3 py-1">Empresas</span>
+                        </div>
+                        <h3 class="text-2xl md:text-3xl font-serif mb-4 text-alabaster">Espacios Corporativos</h3>
+                        <p class="text-muted font-light text-sm leading-relaxed mb-8">
+                            Equipamiento ágil de oficinas ejecutivas, estaciones de trabajo, mesas de juntas y sillería ergonómica con ejecución discreta y ordenada.
+                        </p>
+                    </div>
+                    <div class="relative z-10 border-t border-white/10 pt-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                        <ul class="space-y-2 text-xs text-alabaster/80 tracking-wide">
+                            <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 bg-gold rounded-full"></span> Organización y canalización de cableado</li>
+                            <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 bg-gold rounded-full"></span> Atención a instalaciones por volumen</li>
+                        </ul>
+                        <a href="https://wa.me/525664825962?text=Hola%20OBV%C3%89L,%20quiero%20cotizar%20Espacios%20Corporativos." target="_blank" class="text-[11px] uppercase tracking-[0.2em] text-gold hover:text-alabaster transition-colors shrink-0">Cotizar &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Servicio 4 -->
+                <div class="spotlight-card group bg-surface/85 p-10 border border-white/10 hover:border-gold/60 transition-all duration-500 reveal flex flex-col justify-between" style="transition-delay: 0.1s;">
+                    <div class="relative z-10">
+                        <div class="flex justify-between items-start mb-6">
+                            <span class="text-gold/70 font-serif italic text-2xl">04</span>
+                            <span class="text-[10px] uppercase tracking-[0.2em] text-muted border border-white/10 px-3 py-1">Logística</span>
+                        </div>
+                        <h3 class="text-2xl md:text-3xl font-serif mb-4 text-alabaster">Desmontaje Cuidadoso</h3>
+                        <p class="text-muted font-light text-sm leading-relaxed mb-8">
+                            Desarmado técnico de mobiliario complejo para mudanzas o remodelaciones, preservando la integridad de cada tablero, riel y acabado.
+                        </p>
+                    </div>
+                    <div class="relative z-10 border-t border-white/10 pt-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                        <ul class="space-y-2 text-xs text-alabaster/80 tracking-wide">
+                            <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 bg-gold rounded-full"></span> Etiquetado y clasificación de herrajes</li>
+                            <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 bg-gold rounded-full"></span> Manejo delicado de cristal y chapas</li>
+                        </ul>
+                        <a href="https://wa.me/525664825962?text=Hola%20OBV%C3%89L,%20quiero%20cotizar%20Desmontaje%20Cuidadoso." target="_blank" class="text-[11px] uppercase tracking-[0.2em] text-gold hover:text-alabaster transition-colors shrink-0">Cotizar &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 4. CONFIGURADOR INTERACTIVO DE CUADROS EN ACRÍLICO        -->
+    <!-- ========================================================= -->
+    <section id="configurador" class="py-28 bg-obsidian border-b border-white/5 relative overflow-hidden">
+        <div class="absolute left-0 top-1/2 -translate-y-1/2 w-[450px] h-[450px] bg-gold/5 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-6 lg:px-10 relative z-10">
+            <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+                <span class="text-gold text-xs uppercase tracking-[0.25em] block mb-3">Estudio Interactivo</span>
+                <h2 class="text-4xl md:text-5xl font-serif text-alabaster mb-4">Configura tu Cuadro de Acrílico</h2>
+                <p class="text-muted font-light text-sm leading-relaxed">
+                    Personaliza las dimensiones, el espesor y el sistema de montaje para visualizar el acabado y enviar tu solicitud exacta por WhatsApp.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center bg-charcoal/80 border border-white/10 p-6 sm:p-10 lg:p-12 reveal">
+                <!-- Vista Previa Visual en Vivo -->
+                <div class="lg:col-span-6 flex flex-col items-center justify-center bg-obsidian border border-white/10 p-8 sm:p-12 min-h-[420px] relative overflow-hidden">
+                    <span class="absolute top-4 left-4 text-[10px] uppercase tracking-[0.22em] text-muted">Vista Previa en Muro</span>
+                    <span id="preview-dims-badge" class="absolute top-4 right-4 text-[10px] uppercase tracking-[0.2em] text-gold border border-gold/30 px-2.5 py-1">80 × 120 cm</span>
+
+                    <!-- Marco de Acrílico Dinámico -->
+                    <div id="acrylic-frame" class="acrylic-preview-frame w-[220px] h-[300px] bg-surface overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?auto=format&fit=crop&q=85&w=700" alt="Vista previa de obra en acrílico" class="w-full h-full object-cover">
+                        <div class="acrylic-sheen"></div>
+                        <!-- Chapetones (visibles cuando se selecciona montaje con chapetones) -->
+                        <div class="standoff-pin top-3 left-3 opacity-0" data-pin></div>
+                        <div class="standoff-pin top-3 right-3 opacity-0" data-pin></div>
+                        <div class="standoff-pin bottom-3 left-3 opacity-0" data-pin></div>
+                        <div class="standoff-pin bottom-3 right-3 opacity-0" data-pin></div>
+                    </div>
+
+                    <div class="mt-8 flex items-center gap-4 text-[11px] uppercase tracking-[0.18em] text-muted">
+                        <span id="preview-thickness-label">Acrílico 6mm Galería</span>
+                        <span class="text-gold">•</span>
+                        <span id="preview-mount-label">Bastidor Oculto Flotante</span>
+                    </div>
+                </div>
+
+                <!-- Controles del Configurador -->
+                <div class="lg:col-span-6 space-y-8">
+                    <!-- 1. Formato / Medidas -->
+                    <div>
+                        <label class="block text-[11px] uppercase tracking-[0.22em] text-gold mb-3">1. Selecciona el Formato</label>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                            <button type="button" class="config-option px-3 py-3 text-xs border border-white/15 text-alabaster/80 hover:border-gold transition-colors" data-group="size" data-value="60 × 90 cm" data-w="180" data-h="250">60×90 cm</button>
+                            <button type="button" class="config-option active px-3 py-3 text-xs border border-white/15 text-alabaster/80 hover:border-gold transition-colors" data-group="size" data-value="80 × 120 cm" data-w="220" data-h="300">80×120 cm</button>
+                            <button type="button" class="config-option px-3 py-3 text-xs border border-white/15 text-alabaster/80 hover:border-gold transition-colors" data-group="size" data-value="100 × 150 cm" data-w="250" data-h="330">100×150 cm</button>
+                            <button type="button" class="config-option px-3 py-3 text-xs border border-white/15 text-alabaster/80 hover:border-gold transition-colors" data-group="size" data-value="120 × 80 cm (Horizontal)" data-w="310" data-h="210">120×80 Horiz.</button>
+                        </div>
+                    </div>
+
+                    <!-- 2. Espesor del Acrílico -->
+                    <div>
+                        <label class="block text-[11px] uppercase tracking-[0.22em] text-gold mb-3">2. Espesor del Acrílico</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                            <button type="button" class="config-option px-4 py-3 text-xs border border-white/15 text-alabaster/80 hover:border-gold transition-colors text-left" data-group="thickness" data-value="Acrílico 4mm Estándar">
+                                <span class="block font-medium">4 mm</span>
+                                <span class="text-[10px] opacity-75">Ligero y nítido</span>
+                            </button>
+                            <button type="button" class="config-option active px-4 py-3 text-xs border border-white/15 text-alabaster/80 hover:border-gold transition-colors text-left" data-group="thickness" data-value="Acrílico 6mm Galería">
+                                <span class="block font-medium">6 mm Galería</span>
+                                <span class="text-[10px] opacity-75">Profundidad óptica</span>
+                            </button>
+                            <button type="button" class="config-option px-4 py-3 text-xs border border-white/15 text-alabaster/80 hover:border-gold transition-colors text-left" data-group="thickness" data-value="Acrílico 9mm Museo">
+                                <span class="block font-medium">9 mm Museo</span>
+                                <span class="text-[10px] opacity-75">Máximo lujo</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 3. Sistema de Montaje -->
+                    <div>
+                        <label class="block text-[11px] uppercase tracking-[0.22em] text-gold mb-3">3. Sistema de Fijación</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                            <button type="button" class="config-option active px-4 py-3.5 text-xs border border-white/15 text-alabaster/80 hover:border-gold transition-colors text-left" data-group="mount" data-value="Bastidor Oculto Flotante" data-pins="false">
+                                <span class="block font-medium">Bastidor Oculto</span>
+                                <span class="text-[10px] opacity-75">Efecto flotante limpio sin herrajes visibles</span>
+                            </button>
+                            <button type="button" class="config-option px-4 py-3.5 text-xs border border-white/15 text-alabaster/80 hover:border-gold transition-colors text-left" data-group="mount" data-value="Chapetones Metálicos (Acero/Oro)" data-pins="true">
+                                <span class="block font-medium">Chapetones Metálicos</span>
+                                <span class="text-[10px] opacity-75">Fijación arquitectónica en las 4 esquinas</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Botón Enviar Configuración -->
+                    <div class="pt-4 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div>
+                            <p class="text-xs text-muted">¿Tienes medidas especiales?</p>
+                            <p class="text-sm font-serif text-alabaster">Lo fabricamos exactamente a tu muro.</p>
+                        </div>
+                        <button type="button" id="send-config-wa" class="w-full sm:w-auto bg-gold text-obsidian px-8 py-4 text-xs uppercase tracking-[0.2em] font-semibold hover:bg-alabaster transition-colors shadow-lg">
+                            Cotizar esta Pieza
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 5. PROTOCOLO GUANTE BLANCO (4 PILARES DE GARANTÍA)        -->
+    <!-- ========================================================= -->
+    <section class="py-24 bg-charcoal border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 lg:px-10">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-14 gap-6 reveal">
+                <div>
+                    <span class="text-gold text-xs uppercase tracking-[0.25em] block mb-3">Estándar OBVÉL</span>
+                    <h2 class="text-4xl md:text-5xl font-serif text-alabaster">Protocolo Guante Blanco</h2>
+                </div>
+                <p class="text-muted text-sm font-light max-w-md">
+                    Cada visita sigue un protocolo estricto diseñado para proteger tu inversión y entregar resultados listos para fotografía.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="p-8 bg-obsidian/70 border border-white/10 hover:border-gold/40 transition-colors reveal">
+                    <span class="font-serif text-3xl text-gold italic block mb-4">I.</span>
+                    <h3 class="text-lg font-medium text-alabaster mb-2">Protección Total</h3>
+                    <p class="text-muted text-xs font-light leading-relaxed">Cubrimos pisos de madera, mármol y zonas de trabajo antes de abrir la primera caja.</p>
+                </div>
+                <div class="p-8 bg-obsidian/70 border border-white/10 hover:border-gold/40 transition-colors reveal" style="transition-delay: 0.08s;">
+                    <span class="font-serif text-3xl text-gold italic block mb-4">II.</span>
+                    <h3 class="text-lg font-medium text-alabaster mb-2">Nivelación Láser</h3>
+                    <p class="text-muted text-xs font-light leading-relaxed">Cada cuadro, espejo y mueble se alinea con láser de precisión milimétrica.</p>
+                </div>
+                <div class="p-8 bg-obsidian/70 border border-white/10 hover:border-gold/40 transition-colors reveal" style="transition-delay: 0.16s;">
+                    <span class="font-serif text-3xl text-gold italic block mb-4">III.</span>
+                    <h3 class="text-lg font-medium text-alabaster mb-2">Anclaje Seguro</h3>
+                    <p class="text-muted text-xs font-light leading-relaxed">Evaluamos concreto, tablaroca o madera para usar el taquete exacto según el peso.</p>
+                </div>
+                <div class="p-8 bg-obsidian/70 border border-white/10 hover:border-gold/40 transition-colors reveal" style="transition-delay: 0.24s;">
+                    <span class="font-serif text-3xl text-gold italic block mb-4">IV.</span>
+                    <h3 class="text-lg font-medium text-alabaster mb-2">Espacio Recogido</h3>
+                    <p class="text-muted text-xs font-light leading-relaxed">Limpiamos el polvo de perforación, doblamos empaques y dejamos todo en orden.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 6. TALLER DE PRODUCCIÓN: CUADROS DE ACRÍLICO (7 PASOS)    -->
+    <!-- ========================================================= -->
+    <section id="acrilicos" class="py-28 bg-obsidian border-b border-white/5 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 lg:px-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+                <div class="lg:col-span-7 reveal-left">
+                    <span class="text-gold text-xs uppercase tracking-[0.25em] block mb-3">Taller Propio OBVÉL</span>
+                    <h2 class="text-4xl md:text-5xl font-serif mb-6 text-alabaster leading-tight">
+                        Producción Integral de Cuadros de Acrílico
+                    </h2>
+                    <p class="text-muted font-light leading-relaxed mb-12 max-w-xl">
+                        Controlamos cada etapa de fabricación internamente para entregar piezas con profundidad visual, brillo cristalino y acabados de precisión listas para transformar tus muros.
+                    </p>
+
+                    <div class="relative border-l border-white/15 ml-3 space-y-9 pb-2">
+                        <div class="relative pl-8 timeline-dot reveal">
+                            <span class="text-[11px] uppercase tracking-[0.2em] text-gold">Paso 01</span>
+                            <h4 class="text-alabaster font-serif text-2xl mt-0.5">Recepción y Diseño</h4>
+                            <p class="text-muted font-light text-sm mt-1">Recibimos tu idea, fotografía o propuesta artística personalizada directamente.</p>
+                        </div>
+                        <div class="relative pl-8 timeline-dot reveal">
+                            <span class="text-[11px] uppercase tracking-[0.2em] text-gold">Paso 02</span>
+                            <h4 class="text-alabaster font-serif text-2xl mt-0.5">Ajuste y Preparación</h4>
+                            <p class="text-muted font-light text-sm mt-1">Adaptamos la composición a las dimensiones exactas solicitadas y optimizamos el archivo.</p>
+                        </div>
+                        <div class="relative pl-8 timeline-dot reveal">
+                            <span class="text-[11px] uppercase tracking-[0.2em] text-gold">Paso 03</span>
+                            <h4 class="text-alabaster font-serif text-2xl mt-0.5">Impresión Interna</h4>
+                            <p class="text-muted font-light text-sm mt-1">Imprimimos tu obra en nuestro taller con equipos de alta definición y fidelidad cromática.</p>
+                        </div>
+                        <div class="relative pl-8 timeline-dot reveal">
+                            <span class="text-[11px] uppercase tracking-[0.2em] text-gold">Paso 04</span>
+                            <h4 class="text-alabaster font-serif text-2xl mt-0.5">Corte y Preparación del Acrílico</h4>
+                            <p class="text-muted font-light text-sm mt-1">Dimensionamos y preparamos la lámina de acrílico con herramienta de precisión.</p>
+                        </div>
+                        <div class="relative pl-8 timeline-dot reveal">
+                            <span class="text-[11px] uppercase tracking-[0.2em] text-gold">Paso 05</span>
+                            <h4 class="text-alabaster font-serif text-2xl mt-0.5">Montaje y Laminado</h4>
+                            <p class="text-muted font-light text-sm mt-1">Fijamos la impresión al acrílico mediante un montaje artesanal limpio y libre de burbujas.</p>
+                        </div>
+                        <div class="relative pl-8 timeline-dot reveal">
+                            <span class="text-[11px] uppercase tracking-[0.2em] text-gold">Paso 06</span>
+                            <h4 class="text-alabaster font-serif text-2xl mt-0.5">Instalación de Herrajes</h4>
+                            <p class="text-muted font-light text-sm mt-1">Colocamos soportes traseros especializados que brindan estabilidad total y efecto flotante en el muro.</p>
+                        </div>
+                        <div class="relative pl-8 timeline-dot reveal">
+                            <span class="text-[11px] uppercase tracking-[0.2em] text-gold">Paso 07</span>
+                            <h4 class="text-alabaster font-serif text-2xl mt-0.5">Control de Calidad y Empaque</h4>
+                            <p class="text-muted font-light text-sm mt-1">Pulimos, limpiamos cada superficie y protegemos la pieza con empaque especial para su entrega e instalación.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 reveal-right lg:sticky lg:top-28">
+                    <div class="relative border border-white/10 p-3 bg-charcoal">
+                        <img src="https://images.unsplash.com/photo-1574634534894-89d7576c8259?auto=format&fit=crop&q=85&w=850" loading="lazy" alt="Cuadro de acrílico de alto brillo" class="w-full h-[540px] object-cover">
+                        <div class="absolute top-6 right-6 bg-obsidian/90 backdrop-blur-md border border-gold/40 px-5 py-4 text-center">
+                            <span class="font-serif text-3xl text-gold block leading-none">100%</span>
+                            <span class="text-[10px] uppercase tracking-[0.2em] text-alabaster mt-1 block">Producción Propia</span>
+                        </div>
+                    </div>
+                    <div class="mt-6 p-6 bg-surface border border-white/10 flex items-center justify-between gap-4">
+                        <div>
+                            <p class="text-alabaster font-serif text-xl">¿Tienes una imagen en mente?</p>
+                            <p class="text-xs text-muted font-light mt-1">Cotiza tus medidas hoy mismo por WhatsApp.</p>
+                        </div>
+                        <a href="https://wa.me/525664825962?text=Hola%20OBV%C3%89L,%20quiero%20cotizar%20un%20cuadro%20de%20acr%C3%ADlico%20personalizado." target="_blank" class="shrink-0 bg-gold text-obsidian px-5 py-3 text-[11px] uppercase tracking-[0.18em] font-semibold hover:bg-alabaster transition-colors">
+                            Cotizar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 7. PORTAFOLIO CON FILTROS Y LIGHTBOX CON NAVEGACIÓN       -->
+    <!-- ========================================================= -->
+    <section id="portafolio" class="py-28 bg-charcoal border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 lg:px-10">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6 reveal">
+                <div>
+                    <span class="text-gold text-xs uppercase tracking-[0.25em] block mb-3">Selección de Obra</span>
+                    <h2 class="text-4xl md:text-5xl font-serif text-alabaster">Portafolio</h2>
+                </div>
+                <!-- Filtros -->
+                <div class="flex flex-wrap gap-2">
+                    <button class="filter-btn active px-4 py-2 text-[11px] uppercase tracking-[0.18em] border border-white/15 text-alabaster transition-colors" data-filter="all">Todos</button>
+                    <button class="filter-btn px-4 py-2 text-[11px] uppercase tracking-[0.18em] border border-white/15 text-muted hover:text-alabaster transition-colors" data-filter="residencial">Residencial</button>
+                    <button class="filter-btn px-4 py-2 text-[11px] uppercase tracking-[0.18em] border border-white/15 text-muted hover:text-alabaster transition-colors" data-filter="acrilicos">Acrílicos</button>
+                    <button class="filter-btn px-4 py-2 text-[11px] uppercase tracking-[0.18em] border border-white/15 text-muted hover:text-alabaster transition-colors" data-filter="corporativo">Corporativo</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="portfolio-grid">
+                <div class="portfolio-item reveal relative group cursor-pointer overflow-hidden border border-white/10 bg-surface" data-category="residencial" data-index="0">
+                    <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=80&w=700" data-full="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=85&w=1400" data-caption="Estancia Residencial — Ensamblaje y nivelación integral" loading="lazy" class="w-full aspect-[4/5] object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100" alt="Estancia Residencial">
+                    <div class="absolute inset-0 bg-gradient-to-t from-obsidian/90 via-obsidian/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="text-[10px] uppercase tracking-[0.2em] text-gold">Residencial</span>
+                        <span class="font-serif text-xl text-alabaster mt-1">Estancia Contemporánea</span>
+                    </div>
+                </div>
+
+                <div class="portfolio-item reveal relative group cursor-pointer overflow-hidden border border-white/10 bg-surface" data-category="acrilicos" data-index="1">
+                    <img src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&q=80&w=700" data-full="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&q=85&w=1400" data-caption="Galería de Muro — Fabricación y montaje en acrílico" loading="lazy" class="w-full aspect-[4/5] object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100" alt="Arte montado en muro">
+                    <div class="absolute inset-0 bg-gradient-to-t from-obsidian/90 via-obsidian/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="text-[10px] uppercase tracking-[0.2em] text-gold">Acrílicos</span>
+                        <span class="font-serif text-xl text-alabaster mt-1">Montaje de Galería</span>
+                    </div>
+                </div>
+
+                <div class="portfolio-item reveal relative group cursor-pointer overflow-hidden border border-white/10 bg-surface" data-category="residencial" data-index="2">
+                    <img src="https://images.unsplash.com/photo-1594026112284-02bb6f3352fe?auto=format&fit=crop&q=80&w=700" data-full="https://images.unsplash.com/photo-1594026112284-02bb6f3352fe?auto=format&fit=crop&q=85&w=1400" data-caption="Mobiliario Modular — Calibración de puertas y herrajes" loading="lazy" class="w-full aspect-[4/5] object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100" alt="Mobiliario modular">
+                    <div class="absolute inset-0 bg-gradient-to-t from-obsidian/90 via-obsidian/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="text-[10px] uppercase tracking-[0.2em] text-gold">Residencial</span>
+                        <span class="font-serif text-xl text-alabaster mt-1">Mobiliario de Diseño</span>
+                    </div>
+                </div>
+
+                <div class="portfolio-item reveal relative group cursor-pointer overflow-hidden border border-white/10 bg-surface" data-category="corporativo" data-index="3">
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=700" data-full="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=85&w=1400" data-caption="Oficina Ejecutiva — Estaciones y gestión de cableado" loading="lazy" class="w-full aspect-[4/5] object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100" alt="Oficina ejecutiva">
+                    <div class="absolute inset-0 bg-gradient-to-t from-obsidian/90 via-obsidian/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="text-[10px] uppercase tracking-[0.2em] text-gold">Corporativo</span>
+                        <span class="font-serif text-xl text-alabaster mt-1">Espacio Ejecutivo</span>
+                    </div>
+                </div>
+
+                <div class="portfolio-item reveal relative group cursor-pointer overflow-hidden border border-white/10 bg-surface" data-category="residencial" data-index="4">
+                    <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=700" data-full="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=85&w=1400" data-caption="Sala Principal — Instalación integral y arte" loading="lazy" class="w-full aspect-[4/5] object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100" alt="Sala principal">
+                    <div class="absolute inset-0 bg-gradient-to-t from-obsidian/90 via-obsidian/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="text-[10px] uppercase tracking-[0.2em] text-gold">Residencial</span>
+                        <span class="font-serif text-xl text-alabaster mt-1">Sala Arquitectónica</span>
+                    </div>
+                </div>
+
+                <div class="portfolio-item reveal relative group cursor-pointer overflow-hidden border border-white/10 bg-surface" data-category="acrilicos" data-index="5">
+                    <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80&w=700" data-full="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=85&w=1400" data-caption="Arte en Acrílico — Nivelación láser de gran formato" loading="lazy" class="w-full aspect-[4/5] object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100" alt="Arte en pared">
+                    <div class="absolute inset-0 bg-gradient-to-t from-obsidian/90 via-obsidian/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="text-[10px] uppercase tracking-[0.2em] text-gold">Acrílicos</span>
+                        <span class="font-serif text-xl text-alabaster mt-1">Piezas de Gran Formato</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox Modal con Navegación -->
+    <div id="lightbox">
+        <button class="absolute top-6 right-8 text-alabaster/70 hover:text-gold text-4xl font-light z-50 transition-colors" onclick="closeLightbox()" aria-label="Cerrar">&times;</button>
+        <button class="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 text-alabaster/70 hover:text-gold p-3 border border-white/10 bg-obsidian/60 z-50 transition-colors" onclick="navigateLightbox(-1)" aria-label="Anterior">&#8592;</button>
+        <button class="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 text-alabaster/70 hover:text-gold p-3 border border-white/10 bg-obsidian/60 z-50 transition-colors" onclick="navigateLightbox(1)" aria-label="Siguiente">&#8594;</button>
+        <div class="lightbox-img-wrap text-center">
+            <img id="lightbox-img" class="max-w-[86vw] max-h-[76vh] object-contain border border-white/10 shadow-2xl mx-auto" alt="Vista ampliada">
+            <div class="mt-4 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4">
+                <p id="lightbox-caption" class="font-serif text-lg text-alabaster/90 tracking-wide"></p>
+                <span id="lightbox-counter" class="text-[11px] uppercase tracking-[0.2em] text-gold"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- 8. TESTIMONIOS                                            -->
+    <!-- ========================================================= -->
+    <section class="py-28 bg-obsidian border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 lg:px-10">
+            <div class="text-center mb-16 reveal">
+                <span class="text-gold text-xs uppercase tracking-[0.25em] block mb-3">Reseñas Verificadas</span>
+                <h2 class="text-4xl md:text-5xl font-serif text-alabaster">La experiencia OBVÉL</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-surface/70 p-9 border border-white/10 reveal flex flex-col justify-between">
+                    <div>
+                        <div class="text-gold text-sm tracking-widest mb-5">★★★★★</div>
+                        <p class="text-alabaster/80 font-light text-sm leading-relaxed italic mb-6">
+                            "El cuadro de acrílico superó lo que imaginaba. La nitidez de la impresión y el montaje sobre tablaroca quedaron impecables, sin una sola marca en el muro."
+                        </p>
+                    </div>
+                    <div class="flex items-center justify-between border-t border-white/10 pt-4">
+                        <p class="text-xs uppercase tracking-[0.2em] text-gold">— Roberto M.</p>
+                        <span class="text-[10px] uppercase tracking-wider text-muted">Cuadro Acrílico</span>
+                    </div>
+                </div>
+
+                <div class="bg-surface/70 p-9 border border-white/10 reveal flex flex-col justify-between" style="transition-delay: 0.1s;">
+                    <div>
+                        <div class="text-gold text-sm tracking-widest mb-5">★★★★★</div>
+                        <p class="text-alabaster/80 font-light text-sm leading-relaxed italic mb-6">
+                            "Armaron todo el mobiliario de mi despacho en tiempo récord. Al terminar recogieron el área por completo y dejaron los cartones doblados en perfecto orden."
+                        </p>
+                    </div>
+                    <div class="flex items-center justify-between border-t border-white/10 pt-4">
+                        <p class="text-xs uppercase tracking-[0.2em] text-gold">— Laura V.</p>
+                        <span class="text-[10px] uppercase tracking-wider text-muted">Corporativo</span>
+                    </div>
+                </div>
+
+                <div class="bg-surface/70 p-9 border border-white/10 reveal flex flex-col justify-between" style="transition-delay: 0.2s;">
+                    <div>
+                        <div class="text-gold text-sm tracking-widest mb-5">★★★★★</div>
+                        <p class="text-alabaster/80 font-light text-sm leading-relaxed italic mb-6">
+                            "Se nota la diferencia desde que llegan. Puntuales, silenciosos y con un cuidado impresionante por cada puerta, bisagra y piso de madera."
+                        </p>
+                    </div>
+                    <div class="flex items-center justify-between border-t border-white/10 pt-4">
+                        <p class="text-xs uppercase tracking-[0.2em] text-gold">— Diego F.</p>
+                        <span class="text-[10px] uppercase tracking-wider text-muted">Residencial</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 9. PREGUNTAS FRECUENTES (AMPLIADO)                        -->
+    <!-- ========================================================= -->
+    <section id="faq" class="py-28 bg-charcoal border-b border-white/5">
+        <div class="max-w-3xl mx-auto px-6 lg:px-10">
+            <div class="text-center mb-16 reveal">
+                <span class="text-gold text-xs uppercase tracking-[0.25em] block mb-3">Claridad Total</span>
+                <h2 class="text-4xl md:text-5xl font-serif text-alabaster">Preguntas Frecuentes</h2>
+            </div>
+
+            <div class="divide-y divide-white/10 border-y border-white/10">
+                <div class="faq-item reveal">
+                    <button class="w-full py-6 text-left flex justify-between items-center focus:outline-none group" onclick="toggleFaq(this)">
+                        <span class="font-serif text-xl text-alabaster group-hover:text-gold transition-colors">¿Instalan cuadros pesados de acrílico en muros de tablaroca?</span>
+                        <span class="faq-icon text-gold text-2xl font-light ml-4">+</span>
+                    </button>
+                    <div class="faq-content">
+                        <div class="faq-content-inner">
+                            <p class="pb-6 text-muted font-light text-sm leading-relaxed">
+                                Sí. Evaluamos el tipo de muro antes de perforar y utilizamos taquetes especializados de expansión o mariposa diseñados para tablaroca, garantizando que tus cuadros y espejos queden firmemente sujetos y nivelados.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item reveal">
+                    <button class="w-full py-6 text-left flex justify-between items-center focus:outline-none group" onclick="toggleFaq(this)">
+                        <span class="font-serif text-xl text-alabaster group-hover:text-gold transition-colors">¿Qué marcas de mobiliario ensamblan?</span>
+                        <span class="faq-icon text-gold text-2xl font-light ml-4">+</span>
+                    </button>
+                    <div class="faq-content">
+                        <div class="faq-content-inner">
+                            <p class="pb-6 text-muted font-light text-sm leading-relaxed">
+                                Dominamos sistemas modulares y piezas complejas de IKEA, West Elm, CB2, Pottery Barn, Wayfair, Herman Miller y diseñadores independientes.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item reveal">
+                    <button class="w-full py-6 text-left flex justify-between items-center focus:outline-none group" onclick="toggleFaq(this)">
+                        <span class="font-serif text-xl text-alabaster group-hover:text-gold transition-colors">¿Cuánto tarda la fabricación de un cuadro de acrílico personalizado?</span>
+                        <span class="faq-icon text-gold text-2xl font-light ml-4">+</span>
+                    </button>
+                    <div class="faq-content">
+                        <div class="faq-content-inner">
+                            <p class="pb-6 text-muted font-light text-sm leading-relaxed">
+                                Al producir todo en nuestro taller propio, el tiempo promedio es de 3 a 5 días hábiles desde la aprobación de tu diseño y medidas, incluyendo control de calidad y empaque seguro.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item reveal">
+                    <button class="w-full py-6 text-left flex justify-between items-center focus:outline-none group" onclick="toggleFaq(this)">
+                        <span class="font-serif text-xl text-alabaster group-hover:text-gold transition-colors">¿Cómo dejan el espacio al terminar el servicio?</span>
+                        <span class="faq-icon text-gold text-2xl font-light ml-4">+</span>
+                    </button>
+                    <div class="faq-content">
+                        <div class="faq-content-inner">
+                            <p class="pb-6 text-muted font-light text-sm leading-relaxed">
+                                Al finalizar, desglosamos y apilamos los empaques de manera ordenada, limpiamos el polvo generado por instalaciones en muro y recogemos completamente el área de trabajo para que tu espacio quede listo para disfrutarse.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 10. COTIZADOR INTELIGENTE DIRECTO A WHATSAPP              -->
+    <!-- ========================================================= -->
+    <section id="contacto" class="py-28 bg-obsidian relative overflow-hidden">
+        <div class="absolute -right-40 top-1/2 -translate-y-1/2 w-[520px] h-[520px] rounded-full bg-gold/5 blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-6 lg:px-10 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+                <div class="lg:col-span-5 reveal-left">
+                    <span class="text-gold font-serif italic text-2xl block mb-3">Atención directa y sin esperas.</span>
+                    <h2 class="text-4xl md:text-5xl lg:text-6xl font-serif text-alabaster leading-tight mb-6">
+                        Eleva tu espacio hoy mismo.
+                    </h2>
+                    <p class="text-muted font-light text-base leading-relaxed mb-10">
+                        Cotiza directamente por WhatsApp. Compártenos qué necesitas ensamblar o las medidas de tu cuadro en acrílico y coordinaremos tu cita de inmediato.
+                    </p>
+                    <a href="https://wa.me/525664825962?text=Hola%20OBV%C3%89L,%20quiero%20agendar%20un%20servicio." target="_blank" class="inline-flex items-center gap-3 bg-gold text-obsidian px-9 py-4 text-xs uppercase tracking-[0.2em] font-semibold hover:bg-alabaster transition-colors shadow-xl">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.88-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.347-.272.297-1.04 1.016-1.04 2.479 0 1.463 1.065 2.876 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                        <span>Abrir WhatsApp Directo</span>
+                    </a>
+                </div>
+
+                <!-- Formulario Cotizador WhatsApp -->
+                <div class="lg:col-span-7 reveal-right">
+                    <div class="bg-charcoal p-8 sm:p-10 border border-white/10 shadow-2xl relative">
+                        <div class="flex items-center justify-between border-b border-white/10 pb-5 mb-7">
+                            <h3 class="font-serif text-2xl text-alabaster">Cotizador Rápido</h3>
+                            <span class="text-[10px] uppercase tracking-[0.2em] text-gold border border-gold/40 px-3 py-1">Respuesta Inmediata</span>
+                        </div>
+                        <form id="whatsappForm" class="space-y-5">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                <div>
+                                    <label for="waName" class="block text-[11px] uppercase tracking-[0.2em] text-muted mb-2">Tu Nombre</label>
+                                    <input type="text" id="waName" required class="w-full bg-surface border border-white/10 text-alabaster px-4 py-3.5 text-sm focus:outline-none focus:border-gold transition-colors" placeholder="Ej. Alejandro Ruiz">
+                                </div>
+                                <div>
+                                    <label for="waUrgency" class="block text-[11px] uppercase tracking-[0.2em] text-muted mb-2">¿Para cuándo?</label>
+                                    <select id="waUrgency" class="w-full bg-surface border border-white/10 text-alabaster px-4 py-3.5 text-sm focus:outline-none focus:border-gold transition-colors">
+                                        <option>Esta semana</option>
+                                        <option>Lo antes posible (Urgente)</option>
+                                        <option>Próxima semana</option>
+                                        <option>Solo estoy cotizando</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-[11px] uppercase tracking-[0.2em] text-muted mb-2">Servicio de Interés</label>
+                                <div class="flex flex-wrap gap-2" id="service-pills">
+                                    <button type="button" class="service-pill active px-3.5 py-2 text-xs border border-white/15 text-alabaster/80 transition-colors" data-service="Ensamblaje Residencial">Ensamblaje Residencial</button>
+                                    <button type="button" class="service-pill px-3.5 py-2 text-xs border border-white/15 text-alabaster/80 transition-colors" data-service="Fabricación y Montaje de Acrílicos">Cuadros de Acrílico</button>
+                                    <button type="button" class="service-pill px-3.5 py-2 text-xs border border-white/15 text-alabaster/80 transition-colors" data-service="Mobiliario Corporativo">Corporativo</button>
+                                    <button type="button" class="service-pill px-3.5 py-2 text-xs border border-white/15 text-alabaster/80 transition-colors" data-service="Desmontaje Cuidadoso">Desmontaje</button>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="waDetails" class="block text-[11px] uppercase tracking-[0.2em] text-muted mb-2">Detalles Breves (Opcional)</label>
+                                <textarea id="waDetails" rows="3" class="w-full bg-surface border border-white/10 text-alabaster px-4 py-3 text-sm focus:outline-none focus:border-gold transition-colors resize-none" placeholder="Ej. 2 muebles IKEA o cuadro de acrílico de 120x80 cm..."></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-gold text-obsidian py-4 text-xs uppercase tracking-[0.2em] font-semibold hover:bg-alabaster transition-colors">
+                                Enviar Solicitud por WhatsApp
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- FOOTER CON LOCKUP DEL LOGO OBVÉL                          -->
+    <!-- ========================================================= -->
+    <footer class="bg-charcoal pt-16 pb-10 border-t border-white/10 text-muted">
+        <div class="max-w-7xl mx-auto px-6 lg:px-10">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-12 pb-14 border-b border-white/10">
+                <div class="md:col-span-6">
+                    <div class="flex items-center gap-4 mb-5">
+                        <svg class="w-11 h-11 text-gold" viewBox="0 0 80 80" fill="none">
+                            <rect x="10" y="10" width="60" height="60" stroke="currentColor" stroke-width="2.4"/>
+                            <path d="M4 18V4H18M62 4H76V18M76 62V76H62M18 76H4V62" stroke="#D4B475" stroke-width="1.8" opacity="0.65"/>
+                            <polygon points="40,20 60,40 40,60 20,40" stroke="#F0EDE6" stroke-width="2"/>
+                            <circle cx="40" cy="40" r="3.5" fill="#D4B475"/>
+                        </svg>
+                        <div>
+                            <span class="text-2xl font-serif font-semibold tracking-[0.26em] text-alabaster block leading-none">OBVÉL<span class="text-gold">.</span></span>
+                            <span class="text-[9px] uppercase tracking-[0.28em] text-gold/80 mt-1 block">Arquitectura & Acrílico</span>
+                        </div>
+                    </div>
+                    <p class="font-light text-sm max-w-sm leading-relaxed">
+                        Ensamblaje arquitectónico de mobiliario, fabricación propia y montaje de cuadros en acrílico. Precisión milimétrica y trato de guante blanco.
+                    </p>
+                </div>
+
+                <div class="md:col-span-3">
+                    <h4 class="text-alabaster font-serif text-lg mb-4">Navegación</h4>
+                    <ul class="space-y-2.5 text-xs uppercase tracking-[0.15em]">
+                        <li><a href="#filosofia" class="hover:text-gold transition-colors">Filosofía</a></li>
+                        <li><a href="#servicios" class="hover:text-gold transition-colors">Servicios</a></li>
+                        <li><a href="#configurador" class="hover:text-gold transition-colors">Configurador</a></li>
+                        <li><a href="#acrilicos" class="hover:text-gold transition-colors">Taller Acrílico</a></li>
+                        <li><a href="#portafolio" class="hover:text-gold transition-colors">Portafolio</a></li>
+                        <li><a href="#faq" class="hover:text-gold transition-colors">FAQ</a></li>
+                    </ul>
+                </div>
+
+                <div class="md:col-span-3">
+                    <h4 class="text-alabaster font-serif text-lg mb-4">WhatsApp Directo</h4>
+                    <ul class="space-y-3 text-sm font-light">
+                        <li>
+                            <a href="https://wa.me/525664825962" target="_blank" class="text-alabaster hover:text-gold transition-colors flex items-center gap-2">
+                                <span class="text-gold">+52</span> 56 6482 5962
+                            </a>
+                        </li>
+                        <li class="text-xs text-muted pt-2 border-t border-white/10">
+                            Lun - Sáb: 9:00 - 18:00
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-light">
+                <p>&copy; <span id="year"></span> OBVÉL. Todos los derechos reservados.</p>
+                <p class="text-muted/70">Precisión & Diseño en cada instalación</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Botón Flotante de WhatsApp -->
+    <a href="https://wa.me/525664825962?text=Hola%20OBV%C3%89L,%20deseo%20cotizar%20un%20servicio." target="_blank" class="fixed bottom-6 right-6 bg-gold text-obsidian p-4 rounded-full shadow-[0_10px_30px_rgba(212,180,117,0.35)] hover:bg-alabaster transition-all duration-300 hover:scale-110 z-50 flex items-center justify-center group" aria-label="Cotizar por WhatsApp">
+        <span class="absolute right-16 bg-charcoal border border-white/10 text-alabaster text-[11px] uppercase tracking-wider px-3 py-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap">Cotizar ahora</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.005-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+        </svg>
+    </a>
+
+    <!-- ========================================================= -->
+    <!-- SCRIPTS INTERACTIVOS                                      -->
+    <!-- ========================================================= -->
+    <script>
+        // Año dinámico
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Preloader
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            setTimeout(() => {
+                preloader.style.opacity = '0';
+                setTimeout(() => { preloader.style.display = 'none'; }, 600);
+            }, 650);
+        });
+
+        // Barra de progreso de lectura + Navbar dinámica
+        const nav = document.getElementById('navbar');
+        const scrollProgress = document.getElementById('scroll-progress');
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+            scrollProgress.style.width = `${progress}%`;
+
+            if (scrollTop > 40) {
+                nav.style.backgroundColor = 'rgba(7, 7, 8, 0.94)';
+            } else {
+                nav.style.backgroundColor = 'rgba(7, 7, 8, 0.68)';
+            }
+        });
+
+        // Menú móvil
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+        });
+
+        // Efecto Spotlight en tarjetas de servicio
+        document.querySelectorAll('.spotlight-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+                card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+            });
+        });
+
+        // Animaciones Reveal con IntersectionObserver
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12 });
+        document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => revealObserver.observe(el));
+
+        // Contadores (soporte para enteros y decimales)
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const el = entry.target;
+                    const target = parseFloat(el.getAttribute('data-target'));
+                    const isDecimal = el.getAttribute('data-decimal') === 'true';
+                    let current = 0;
+                    const steps = 55;
+                    const increment = target / steps;
+
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= target) {
+                            el.textContent = isDecimal ? target.toFixed(1) : Math.round(target);
+                            clearInterval(timer);
+                        } else {
+                            el.textContent = isDecimal ? current.toFixed(1) : Math.floor(current);
+                        }
+                    }, 22);
+                    counterObserver.unobserve(el);
+                }
+            });
+        }, { threshold: 0.5 });
+        document.querySelectorAll('.counter').forEach(c => counterObserver.observe(c));
+
+        // =========================================================
+        // CONFIGURADOR INTERACTIVO DE CUADROS EN ACRÍLICO
+        // =========================================================
+        const acrylicState = {
+            size: '80 × 120 cm',
+            thickness: 'Acrílico 6mm Galería',
+            mount: 'Bastidor Oculto Flotante'
+        };
+
+        const frameEl = document.getElementById('acrylic-frame');
+        const dimsBadge = document.getElementById('preview-dims-badge');
+        const thicknessLabel = document.getElementById('preview-thickness-label');
+        const mountLabel = document.getElementById('preview-mount-label');
+        const pins = document.querySelectorAll('[data-pin]');
+
+        document.querySelectorAll('.config-option').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const group = btn.getAttribute('data-group');
+                document.querySelectorAll(`.config-option[data-group="${group}"]`).forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const val = btn.getAttribute('data-value');
+                acrylicState[group] = val;
+
+                if (group === 'size') {
+                    frameEl.style.width = `${btn.getAttribute('data-w')}px`;
+                    frameEl.style.height = `${btn.getAttribute('data-h')}px`;
+                    dimsBadge.textContent = val;
+                } else if (group === 'thickness') {
+                    thicknessLabel.textContent = val;
+                } else if (group === 'mount') {
+                    mountLabel.textContent = val;
+                    const showPins = btn.getAttribute('data-pins') === 'true';
+                    pins.forEach(p => p.style.opacity = showPins ? '1' : '0');
+                }
+            });
+        });
+
+        document.getElementById('send-config-wa').addEventListener('click', () => {
+            const msg = `Hola OBVÉL, configuré un cuadro de acrílico en su página:%0A• Formato: ${acrylicState.size}%0A• Espesor: ${acrylicState.thickness}%0A• Montaje: ${acrylicState.mount}%0A¿Me pueden dar cotización?`;
+            window.open(`https://wa.me/525664825962?text=${msg}`, '_blank');
+        });
+
+        // =========================================================
+        // PORTAFOLIO: FILTROS + LIGHTBOX CON NAVEGACIÓN
+        // =========================================================
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const portfolioItems = Array.from(document.querySelectorAll('.portfolio-item'));
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxCaption = document.getElementById('lightbox-caption');
+        const lightboxCounter = document.getElementById('lightbox-counter');
+        let currentLightboxIndex = 0;
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const filter = btn.getAttribute('data-filter');
+
+                portfolioItems.forEach(item => {
+                    item.style.display = (filter === 'all' || item.getAttribute('data-category') === filter) ? 'block' : 'none';
+                });
+            });
+        });
+
+        function updateLightboxContent(index) {
+            const img = portfolioItems[index].querySelector('img');
+            lightboxImg.src = img.getAttribute('data-full');
+            lightboxCaption.textContent = img.getAttribute('data-caption') || '';
+            lightboxCounter.textContent = `${index + 1} / ${portfolioItems.length}`;
+        }
+
+        portfolioItems.forEach((item, idx) => {
+            item.addEventListener('click', () => {
+                currentLightboxIndex = idx;
+                updateLightboxContent(currentLightboxIndex);
+                lightbox.style.display = 'block';
+                setTimeout(() => lightbox.classList.add('active'), 10);
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        function navigateLightbox(dir) {
+            currentLightboxIndex = (currentLightboxIndex + dir + portfolioItems.length) % portfolioItems.length;
+            updateLightboxContent(currentLightboxIndex);
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            setTimeout(() => {
+                lightbox.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }, 300);
+        }
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) closeLightbox();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('active')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowRight') navigateLightbox(1);
+            if (e.key === 'ArrowLeft') navigateLightbox(-1);
+        });
+
+        // =========================================================
+        // FAQ ACORDEÓN
+        // =========================================================
+        function toggleFaq(btn) {
+            const current = btn.closest('.faq-item');
+            document.querySelectorAll('.faq-item').forEach(item => {
+                if (item !== current) item.classList.remove('active');
+            });
+            current.classList.toggle('active');
+        }
+
+        // =========================================================
+        // COTIZADOR RÁPIDO A WHATSAPP
+        // =========================================================
+        let selectedService = 'Ensamblaje Residencial';
+        document.querySelectorAll('.service-pill').forEach(pill => {
+            pill.addEventListener('click', () => {
+                document.querySelectorAll('.service-pill').forEach(p => p.classList.remove('active'));
+                pill.classList.add('active');
+                selectedService = pill.getAttribute('data-service');
+            });
+        });
+
+        document.getElementById('whatsappForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('waName').value.trim();
+            const urgency = document.getElementById('waUrgency').value;
+            const details = document.getElementById('waDetails').value.trim();
+
+            let message = `Hola OBVÉL, soy ${name}. Me gustaría cotizar: ${selectedService} (${urgency}).`;
+            if (details) {
+                message += ` Detalles: ${details}`;
+            }
+
+            window.open(`https://wa.me/525664825962?text=${encodeURIComponent(message)}`, '_blank');
+        });
+    </script>
+</body>
+</html>
